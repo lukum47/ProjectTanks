@@ -1,0 +1,21 @@
+#version 330 core
+
+in vec2 texCoords;
+out vec4 color;
+
+uniform sampler2D texture0;
+uniform vec4 highlightColor; // Цвет подсветки (RGBA)
+uniform float highlightIntensity; // Интенсивность подсветки (0.0 - 1.0)
+
+void main() {
+    vec4 texColor = texture(texture0, texCoords);
+    
+    // Если пиксель непрозрачный (надпись прозрачна, фон непрозрачен)
+    if (texColor.a > 0.0) {
+        // Смешиваем цвет фона с подсветкой
+        color = mix(texColor, highlightColor, highlightIntensity);
+    } else {
+        // Оставляем прозрачные пиксели (надпись) без изменений
+        color = texColor;
+    }
+}
